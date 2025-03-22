@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const FaceRegistration = () => {
   const videoRef = useRef(null);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const { userId, userType } = location.state || {};
@@ -48,11 +49,11 @@ const FaceRegistration = () => {
       });
 
       if (response.data.success) {
-        alert('Face registered successfully!');
-        navigate('/login');
+        setSuccessMessage('Face registered successfully! Please check your email to verify your account.');
+        setError('');
       }
     } catch (err) {
-      setError('Error registering face');
+      setError(err.response?.data?.message || 'Error registering face');
       console.error(err);
     }
   };
@@ -62,15 +63,27 @@ const FaceRegistration = () => {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6">Register Your Face</h2>
         {error && <p className="text-red-600 text-center mb-4">{error}</p>}
-        <div className="flex flex-col items-center">
-          <video ref={videoRef} autoPlay muted className="w-full mb-4" />
-          <button
-            onClick={handleRegisterFace}
-            className="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-          >
-            Register Face
-          </button>
-        </div>
+        {successMessage ? (
+          <div>
+            <p className="text-green-600 text-center mb-4">{successMessage}</p>
+            <button
+              onClick={() => navigate('/login')}
+              className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            >
+              Go to Login
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center">
+            <video ref={videoRef} autoPlay muted className="w-full mb-4" />
+            <button
+              onClick={handleRegisterFace}
+              className="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            >
+              Register Face
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

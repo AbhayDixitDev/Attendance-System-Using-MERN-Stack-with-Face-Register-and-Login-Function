@@ -9,9 +9,16 @@ const Signup = () => {
     dob: '',
     password: '',
   });
-  const [signupType, setSignupType] = useState('student'); // Controls API endpoint
+  const [signupType, setSignupType] = useState('student');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      navigate(user.userType === "student" ? "/student" : "/teacher", { replace: true });
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,7 +38,6 @@ const Signup = () => {
         password: formData.password,
       });
       if (response.data.success) {
-        alert('Signup successful! Please proceed with face registration.');
         navigate('/face-registration', { state: { userId: response.data.userId, userType: signupType } });
       }
     } catch (err) {
@@ -104,7 +110,7 @@ const Signup = () => {
             type="submit"
             className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
           >
-            Sign Up
+            Submit Details
           </button>
         </form>
       </div>

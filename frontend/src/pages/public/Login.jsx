@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    loginType: 'student', // Changed default to 'student'
+    loginType: 'student',
   });
   const [errors, setErrors] = useState({});
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      navigate(user.userType === "student" ? "/student" : "/teacher", { replace: true });
+    }
+  }, [navigate]);
 
   const validateForm = () => {
     let tempErrors = {};
@@ -33,24 +43,31 @@ const LoginForm = () => {
     if (validateForm()) {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:8000/api/${formData.loginType}/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        const response = await axios.post(
+          `http://localhost:8000/api/${formData.loginType}/login`,
+          {
             email: formData.email,
             password: formData.password,
-          }),
-        });
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
 
-        if (response.status === 404) {
-          setShowErrorModal(true);
-        } else if (response.ok) {
+        if (response.data.success) {
           setLoginSuccess(true);
+          localStorage.setItem('user', JSON.stringify(response.data));
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         }
       } catch (error) {
         setShowErrorModal(true);
+        setErrorMessage(
+          error.response?.data?.message || 'Something went wrong during login!'
+        );
       } finally {
         setLoading(false);
       }
@@ -150,13 +167,13 @@ const LoginForm = () => {
       </div>
 
       {showErrorModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center backdrop-blur-sm">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
             <h3 className="text-lg font-medium text-red-600">Error</h3>
-            <p className="mt-2 text-gray-600">Something went wrong!</p>
+            <p className="mt-2 text-gray-600">{errorMessage}</p>
             <button
               onClick={() => setShowErrorModal(false)}
-              className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               Close
             </button>
