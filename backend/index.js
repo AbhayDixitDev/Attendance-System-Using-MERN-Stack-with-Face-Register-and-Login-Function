@@ -15,6 +15,11 @@ app.use(cors());
 
 app.use(express.json());
 
+// Register models
+require('./models/student'); // Registers Student model
+require('./models/teacher'); // Registers Teacher model
+require('./models/attendance'); // Registers Attendance model
+
 mongoose.connect(process.env.DB_CON, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

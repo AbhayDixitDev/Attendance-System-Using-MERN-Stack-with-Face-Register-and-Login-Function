@@ -11,7 +11,7 @@ const ViewStudentAttendance = () => {
 
   const fetchAttendance = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/student/attendance/${user.userId}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/student/attendance/${user.userId}`);
       setAttendance(response.data.attendance);
     } catch (err) {
       console.error(err);

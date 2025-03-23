@@ -24,7 +24,7 @@ const VerifyEmail = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/${userType}/resend-verification`,
+        `${import.meta.env.VITE_API_URL}/api/${userType}/resend-verification`,
         { email, userType },
         { headers: { 'Content-Type': 'application/json' } }
       );

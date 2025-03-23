@@ -96,7 +96,7 @@ const AdminForgotPassword = () => {
       setLoading(true);
       try {
         const response = await axios.post(
-          'http://localhost:8000/api/admin/forget-password/step-1',
+          `${import.meta.env.VITE_API_URL}/api/admin/forget-password/step-1`,
           { email: formData.email },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -117,7 +117,7 @@ const AdminForgotPassword = () => {
       setLoading(true);
       try {
         const response = await axios.post(
-          'http://localhost:8000/api/admin/forget-password/step-2',
+          `${import.meta.env.VITE_API_URL}/api/admin/forget-password/step-2`,
           { email: formData.email, otp: formData.otp },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -140,7 +140,7 @@ const AdminForgotPassword = () => {
       setLoading(true);
       try {
         const response = await axios.post(
-          'http://localhost:8000/api/admin/forget-password/step-3',
+          `${import.meta.env.VITE_API_URL}/api/admin/forget-password/step-3`,
           { email: formData.email, newPassword: formData.newPassword },
           { headers: { 'Content-Type': 'application/json' } }
         );

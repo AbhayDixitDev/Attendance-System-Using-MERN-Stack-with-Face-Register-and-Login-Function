@@ -44,7 +44,7 @@ const LoginForm = () => {
       setLoading(true);
       try {
         const response = await axios.post(
-          `http://localhost:8000/api/${formData.loginType}/login`,
+          `${import.meta.env.VITE_API_URL}/api/${formData.loginType}/login`,
           {
             email: formData.email,
             password: formData.password,

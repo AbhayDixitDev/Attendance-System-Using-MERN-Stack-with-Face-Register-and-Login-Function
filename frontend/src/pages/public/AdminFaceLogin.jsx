@@ -64,7 +64,7 @@ const AdminFaceLogin = () => {
 
       const faceDescriptor = Array.from(detections.descriptor);
       const response = await axios.post(
-        'http://localhost:8000/api/admin/face-login',
+        `${import.meta.env.VITE_API_URL}/api/admin/face-login`,
         { faceDescriptor },
         { headers: { 'Content-Type': 'application/json' } }
       );

@@ -19,7 +19,7 @@ const StudentHome = () => {
 
   const fetchAttendance = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/student/attendance/${user.userId}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/student/attendance/${user.userId}`);
       setAttendance(response.data.attendance);
     } catch (err) {
       console.error(err);
@@ -29,7 +29,7 @@ const StudentHome = () => {
   const handleMarkAttendance = async (subjectCode) => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/student/attendance/mark',
+        `${import.meta.env.VITE_API_URL}/api/student/attendance/mark`,
         { studentId: user.userId, subjectCode, status },
         { headers: { 'Content-Type': 'application/json' } }
       );

@@ -30,7 +30,7 @@ const MarkStudentAttendance = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`http://localhost:8000/api/student/subjects/${user.userId}`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/student/subjects/${user.userId}`, {
         headers: { 'Content-Type': 'application/json' },
       });
       console.log('Subjects API response:', response.data);
@@ -52,7 +52,7 @@ const MarkStudentAttendance = () => {
     setError('');
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/student/attendance/mark',
+        `${import.meta.env.VITE_API_URL}/api/student/attendance/mark`,
         { studentId: user.userId, subjectCode, status },
         { headers: { 'Content-Type': 'application/json' } }
       );

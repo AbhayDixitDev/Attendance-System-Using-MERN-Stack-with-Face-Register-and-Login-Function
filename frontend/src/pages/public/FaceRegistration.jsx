@@ -43,7 +43,7 @@ const FaceRegistration = () => {
       }
 
       const faceDescriptor = Array.from(detections.descriptor);
-      const response = await axios.post(`http://localhost:8000/api/${userType}/register-face`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/${userType}/register-face`, {
         userId,
         faceDescriptor,
       });

@@ -14,4 +14,5 @@ const studentSchema = new mongoose.Schema({
   section: { type: String, required: true }, // e.g., "A"
 });
 
-module.exports = mongoose.model('Student', studentSchema);
+module.exports = mongoose.model('student', studentSchema);
+

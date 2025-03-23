@@ -11,4 +11,4 @@ const AdminSchema = new mongoose.Schema({
   otpExpires: Number, 
 });
   
-module.exports = mongoose.model('Admin', AdminSchema);
+module.exports = mongoose.model('admin', AdminSchema);

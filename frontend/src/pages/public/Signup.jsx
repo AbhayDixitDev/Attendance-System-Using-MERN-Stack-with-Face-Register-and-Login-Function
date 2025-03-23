@@ -74,7 +74,7 @@ const Signup = () => {
         }
 
         const response = await axios.post(
-          `http://localhost:8000/api/${formData.userType}/signup`,
+          `${import.meta.env.VITE_API_URL}/api/${formData.userType}/signup`,
           payload,
           { headers: { 'Content-Type': 'application/json' } }
         );

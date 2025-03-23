@@ -8,6 +8,7 @@ const ViewStudentAttendance = () => {
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedSection, setSelectedSection] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedDate, setSelectedDate] = useState(''); // New date state
   const [attendance, setAttendance] = useState([]);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -42,12 +43,13 @@ const ViewStudentAttendance = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/teacher/attendance/class',
+        `${import.meta.env.VITE_API_URL}/api/teacher/attendance/class`,
         {
           teacherId: user.userId,
           class: selectedClass,
           section: selectedSection,
           subjectCode: selectedSubject,
+          date: selectedDate || null, // Include date, null if not selected
         },
         {
           headers: {
@@ -75,7 +77,7 @@ const ViewStudentAttendance = () => {
         {error && <p className="text-red-600 text-sm text-center mb-4">{error}</p>}
         {loading && <p className="text-gray-600 text-sm text-center mb-4">Loading attendance...</p>}
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">Class</label>
             <select
@@ -126,6 +128,15 @@ const ViewStudentAttendance = () => {
                 </option>
               ))}
             </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Date (Optional)</label>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="mt-1 p-2 border rounded-md w-full focus:border-indigo-300 focus:ring focus:ring-indigo-200"
+            />
           </div>
         </div>
 

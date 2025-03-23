@@ -11,7 +11,7 @@ const AdminHome = () => {
 
   const fetchAttendance = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/admin/attendance', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/attendance`, {
         params: filters,
       });
       setAttendance(response.data.attendance);

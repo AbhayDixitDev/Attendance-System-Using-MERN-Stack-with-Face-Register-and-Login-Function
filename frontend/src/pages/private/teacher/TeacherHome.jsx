@@ -14,7 +14,7 @@ const TeacherHome = () => {
 
   const fetchTeacherAttendance = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/teacher/attendance/${user.userId}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/teacher/attendance/${user.userId}`);
       setAttendance(response.data.attendance);
     } catch (err) {
       console.error(err);
@@ -24,7 +24,7 @@ const TeacherHome = () => {
   const handleMarkAttendance = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/teacher/attendance/mark',
+        `${import.meta.env.VITE_API_URL}/api/teacher/attendance/mark`,
         { teacherId: user.userId, status },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -38,7 +38,7 @@ const TeacherHome = () => {
   const fetchClassAttendance = async (className, section, subjectCode) => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/teacher/attendance/class',
+        `${import.meta.env.VITE_API_URL}/api/teacher/attendance/class`,
         { teacherId: user.userId, class: className, section, subjectCode },
         { headers: { 'Content-Type': 'application/json' } }
       );

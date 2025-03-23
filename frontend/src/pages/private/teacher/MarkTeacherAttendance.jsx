@@ -9,7 +9,7 @@ const MarkTeacherAttendance = () => {
   const handleMarkAttendance = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/teacher/attendance/mark',
+        `${import.meta.env.VITE_API_URL}/api/teacher/attendance/mark`,
         { teacherId: user.userId, status },
         { headers: { 'Content-Type': 'application/json' } }
       );

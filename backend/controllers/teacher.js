@@ -256,39 +256,58 @@ const ViewTeacherAttendance = async (req, res) => {
 
 // View Class Attendance
 const ViewClassAttendance = async (req, res) => {
-  const { teacherId, class: className, section, subjectCode } = req.body;
+  const { teacherId, class: className, section, subjectCode, date } = req.body;
+  console.log('Class attendance request:', { teacherId, className, section, subjectCode, date });
 
   try {
-    // Verify teacher has this class and subject
+    // Verify teacher exists and has this class and subject
     const teacher = await Teacher.findById(teacherId);
-    if (!teacher || !teacher.classes.some(c => c.class === className && c.section === section) || 
-        !teacher.subjects.some(s => s.code === subjectCode)) {
+    if (!teacher) {
+      return res.status(404).json({ message: 'Teacher not found' });
+    }
+    const hasClass = teacher.classes.some(c => c.class === className && c.section === section);
+    const hasSubject = teacher.subjects.some(s => s.code === subjectCode);
+    if (!hasClass || !hasSubject) {
       return res.status(403).json({ message: 'Unauthorized or invalid class/subject' });
     }
 
-    // Fetch attendance records
-    const attendance = await Attendance.find({
+    // Build query object
+    const query = {
+      type: 'student',
       class: className,
       section,
-      subjectCode,
-    }).populate('studentId', 'name'); // Populate student name
+      'subject.code': subjectCode,
+    };
+
+    // Add date filter if provided
+    if (date) {
+      const startOfDay = new Date(date);
+      startOfDay.setHours(0, 0, 0, 0);
+      const endOfDay = new Date(date);
+      endOfDay.setHours(23, 59, 59, 999);
+      query.date = { $gte: startOfDay, $lte: endOfDay };
+    }
+
+    // Fetch attendance records
+    const attendance = await Attendance.find(query).populate('userId', 'name');
+    console.log('Attendance records:', attendance);
 
     // Transform data for frontend
     const formattedAttendance = attendance.map(record => ({
       _id: record._id,
-      studentName: record.studentId.name,
+      studentName: record.userId ? record.userId.name : 'Unknown',
       date: record.date,
-      subjectName: teacher.subjects.find(s => s.code === subjectCode).name,
-      subjectCode: record.subjectCode,
+      subjectName: record.subject.name || 'N/A',
+      subjectCode: record.subject.code,
       status: record.status,
     }));
 
     res.status(200).json({ attendance: formattedAttendance });
   } catch (err) {
+    console.error('Error in ViewClassAttendance:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
-
 
 module.exports = {
   Signup,
