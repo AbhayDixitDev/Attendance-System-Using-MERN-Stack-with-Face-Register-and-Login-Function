@@ -7,8 +7,17 @@ const teacherSchema = new mongoose.Schema({
   password: String,
   faceDescriptor: Array,
   verified: { type: Boolean, default: false },
-  otp: String, // Add OTP field
-  otpExpires: Number, // Add OTP expiration field
+  verificationToken: String,
+  otp: String,
+  otpExpires: Number,
+  subjects: [{
+    name: String, // e.g., "Mathematics"
+    code: String, // e.g., "MATH101"
+  }],
+  classes: [{
+    class: String, // e.g., "10th"
+    section: String, // e.g., "A"
+  }],
 });
 
 module.exports = mongoose.model('Teacher', teacherSchema);

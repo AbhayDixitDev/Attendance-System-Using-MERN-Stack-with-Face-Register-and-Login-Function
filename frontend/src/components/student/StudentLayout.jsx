@@ -15,9 +15,11 @@ const StudentLayout = () => {
     }
   }, [user, navigate]);
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <StudentHeader />
-      <Outlet />
+      <main className="flex-grow max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <Outlet />
+      </main>
       <StudentFooter />
     </div>
   )
