@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const TeacherHeader = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for mobile menu toggle
-
+  const user = JSON.parse(localStorage.getItem('user'));
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/login", { replace: true });
@@ -20,7 +20,7 @@ const TeacherHeader = () => {
         {/* Title */}
         <div className="flex items-center justify-between w-full sm:w-auto">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
-            Teacher Dashboard
+            Welcome, {user.userName}
           </h1>
           {/* Hamburger Menu Button (Visible on mobile) */}
           <button

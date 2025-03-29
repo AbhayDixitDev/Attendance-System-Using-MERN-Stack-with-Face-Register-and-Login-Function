@@ -167,6 +167,7 @@ const ResendVerification = async (req, res) => {
     await Student.findByIdAndUpdate(student._id, { verificationToken });
 
     const verificationLink = `${process.env.BASE_URL}/api/student/verify-email?token=${verificationToken}&id=${student._id}`;
+    console.log(verificationLink);
     const msg = {
       to: email,
       from: 'abhaydixit.dev@gmail.com', // Replace with your verified SendGrid sender email

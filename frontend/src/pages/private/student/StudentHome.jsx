@@ -42,7 +42,7 @@ const StudentHome = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Student Dashboard</h2>
+      <h2 className="text-2xl font-bold mb-4">Student Dashboard {user.userName}</h2>
       
       <div className="mb-6">
         <h3 className="text-xl font-semibold mb-2">Mark Attendance</h3>
